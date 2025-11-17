@@ -39,8 +39,12 @@ fun App(sensorManager: SensorManager?, isLarge: Boolean = false) {
                         isLarge = isLarge,
                         items = items,
                         onClick = { recipe ->
-                            currentRecipe = recipe
-                            navController.navigate(RecipeAppScreen.Details.name)
+
+
+                          throw RuntimeException("weird crash 2")
+                       /*     currentRecipe = recipe
+                            navController.navigate(RecipeAppScreen.Details.name)*/
+
                         })
                 }
                 composable(route = RecipeAppScreen.Details.name) {

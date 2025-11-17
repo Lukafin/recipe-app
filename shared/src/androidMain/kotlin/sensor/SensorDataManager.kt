@@ -48,10 +48,10 @@ class SensorDataManager(context: Context) : SensorEventListener {
                 SensorManager.getOrientation(r, orientation)
                 val adjustedPitch = orientation[1] - (PI.toFloat() / 2)
 
-                Log.d(
+              /*  Log.d(
                     "Sensor Values ",
                     "Sensor values are ${orientation[2]} and pitch is ${orientation[1] - 1.50}"
-                )
+                )*/
 
                 data.trySend(
                     SensorData(

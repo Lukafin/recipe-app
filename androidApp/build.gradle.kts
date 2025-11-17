@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.compose)
+    alias(libs.plugins.sentry.android)
 }
 
 kotlin {
@@ -11,7 +12,10 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(project(":shared"))
-                implementation(libs.sentry.android)
+                // Sentry SDK is automatically added by the Sentry Gradle plugin
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material)
             }
         }
     }

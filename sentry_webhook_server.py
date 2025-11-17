@@ -12,6 +12,8 @@ import sys
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from typing import Any, Dict, Iterable, List, Tuple
 
+import requests
+
 
 LOG_LEVEL = os.getenv("SENTRY_WEBHOOK_LOG_LEVEL", "INFO").upper()
 logging.basicConfig(
@@ -19,6 +21,7 @@ logging.basicConfig(
     format="[%(asctime)s] %(levelname)s %(message)s",
 )
 LOGGER = logging.getLogger(__name__)
+_ENV_LOADED = False
 
 
 def _read_json_body(handler: BaseHTTPRequestHandler) -> Tuple[dict, bytes]:
@@ -128,6 +131,31 @@ def _format_breadcrumbs(event: Dict[str, Any], keep: int = 5) -> List[str]:
     return [_fmt(bc) for bc in recent if isinstance(bc, dict) and _fmt(bc)]
 
 
+def _load_env_file() -> None:
+    """Lightweight .env loader for CURSOR_KEY fallback."""
+    global _ENV_LOADED
+    if _ENV_LOADED:
+        return
+    env_path = os.path.join(os.getcwd(), ".env")
+    if not os.path.isfile(env_path):
+        _ENV_LOADED = True
+        return
+    try:
+        with open(env_path, "r", encoding="utf-8") as env_file:
+            for line in env_file:
+                line = line.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                key, _, value = line.partition("=")
+                key = key.strip()
+                value = value.strip().strip('"').strip("'")
+                os.environ.setdefault(key, value)
+    except OSError as exc:
+        LOGGER.warning("Failed to read .env file: %s", exc)
+    finally:
+        _ENV_LOADED = True
+
+
 def format_sentry_event(payload: Dict[str, Any]) -> str:
     """Produce a readable summary of a Sentry webhook payload."""
     if not isinstance(payload, dict):
@@ -221,6 +249,65 @@ def format_sentry_event(payload: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def _cursor_api_key() -> str:
+    _load_env_file()
+    return os.getenv("CURSOR_KEY") or os.getenv("CURSOR_API_KEY") or ""
+
+
+def _bool_env(name: str, default: bool = True) -> bool:
+    val = os.getenv(name)
+    if val is None:
+        return default
+    return val.lower() not in {"0", "false", "no", "off"}
+
+
+def _build_cursor_payload(prompt_text: str) -> Dict[str, Any]:
+    repo = os.getenv("CURSOR_REPO") or "https://github.com/Lukafin/recipe-app"
+    ref = os.getenv("GITHUB_REF_NAME") or os.getenv("GITHUB_REF", "")
+    if ref.startswith("refs/heads/"):
+        ref = ref[len("refs/heads/") :]
+    target_branch = os.getenv("CURSOR_BRANCH")
+    payload: Dict[str, Any] = {
+        "model": os.getenv("CURSOR_MODEL", "gpt-5-high"),
+        "prompt": {"text": prompt_text},
+        "source": {"repository": repo},
+        "target": {"autoCreatePr": _bool_env("CURSOR_AUTOCREATE_PR", True)},
+    }
+    if ref:
+        payload["source"]["ref"] = ref
+    if target_branch:
+        payload["target"]["branchName"] = target_branch
+    return payload
+
+
+def send_cursor_agent(prompt_text: str) -> None:
+    """Send prompt to Cursor Cloud agent; log failures, do not raise."""
+    api_key = _cursor_api_key()
+    if not api_key:
+        LOGGER.warning("CURSOR_KEY not set; skipping Cursor agent trigger.")
+        return
+
+    payload = _build_cursor_payload(prompt_text)
+    url = os.getenv("CURSOR_AGENT_URL", "https://api.cursor.com/v0/agents")
+
+    try:
+        response = requests.post(
+            url,
+            json=payload,
+            auth=(api_key, ""),
+            headers={"Content-Type": "application/json"},
+            timeout=10,
+        )
+        body_text = ""
+        try:
+            body_text = response.text
+        except Exception:
+            body_text = "<no body>"
+        LOGGER.info("Cursor agent response: %s %s", response.status_code, body_text)
+    except Exception:
+        LOGGER.exception("Failed to trigger Cursor agent")
+
+
 class SentryWebhookHandler(BaseHTTPRequestHandler):
     def _send_response(self, code: int = 200, message: str = "ok") -> None:
         self.send_response(code)
@@ -239,6 +326,13 @@ class SentryWebhookHandler(BaseHTTPRequestHandler):
         summary = format_sentry_event(payload)
         if summary:
             LOGGER.info("Parsed Sentry payload:\n%s", summary)
+            prompt = (
+                "You are a developer fixing a crash reported by Sentry in the repository "
+                "https://github.com/Lukafin/recipe-app.\n"
+                "Propose the fix and necessary code changes. Include a concise explanation and, if possible, a patch.\n\n"
+                f"{summary}"
+            )
+            send_cursor_agent(prompt)
         else:
             LOGGER.info("Raw body:\n%s", raw_body.decode("utf-8", errors="ignore"))
 
