@@ -1,0 +1,1 @@
+Summarize notable security advisories, dependency updates, and maintenance best practices released in the last 60 days that impact Kotlin server backends, Android Compose apps, and modern TypeScript/Next.js frontends. Provide actionable takeaways for a maintenance audit.

@@ -1,0 +1,17 @@
+Perform a proactive maintenance review for the repository. Focus on both the backend/ and frontend/ directories.
+
+Goals:
+1. Detect code, architecture, or dependency issues that will make the project harder to maintain in the future. Examples include dead code, missing tests around critical logic, tightly coupled modules, outdated dependency pins, or unclear separation of concerns.
+2. Identify any security concerns or weak practices (secrets in code, unsafe cryptography, missing input validation, insecure HTTP usage, etc.).
+3. Flag source files that have grown excessively long and recommend logical ways to break them into smaller units (new modules, classes, or functions) so the codebase stays maintainable.
+4. Explicitly identify any source files longer than 500 lines and include guidance on how they could be split up or simplified. 
+5. Check if I am missing some library that would greatly reduce LOC and improve code readability
+
+For every concrete remediation task you find, create a dedicated Markdown brief under ai-maintenance/. Use the filename format ai-maintenance/YYYY-MM-short-title.md.
+
+Each brief must be actionable for another coding agent and include:
+- Summary of the problem and why it matters.
+- Recommended remediation steps or acceptance criteria.
+- Notes on related files, tests to run, or gotchas.
+
+Keep each task in a separate file. If there are no meaningful issues to address, leave the repository untouched.

@@ -1,0 +1,1 @@
+Identify any emerging security advisories, dependency risks, or maintenance best practices relevant to Kotlin, Android (Compose), Ktor, and our Next.js frontend. Highlight newly released tooling or libraries that could simplify maintenance.
