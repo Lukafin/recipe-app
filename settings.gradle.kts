@@ -1,13 +1,3 @@
-rootProject.name = "RecipeAppKMP"
-
-include(":androidApp")
-include(":shared")
-include(":desktopApp")
-include(":webApp")
-include(":tvApp")
-include(":automotiveApp")
-
-
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -22,3 +12,16 @@ pluginManagement {
         }
     }
 }
+
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
+}
+
+rootProject.name = "RecipeAppKMP"
+
+include(":androidApp")
+include(":shared")
+include(":desktopApp")
+include(":webApp")
+include(":tvApp")
+include(":automotiveApp")
