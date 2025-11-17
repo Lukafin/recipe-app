@@ -41,9 +41,9 @@ fun App(sensorManager: SensorManager?, isLarge: Boolean = false) {
                         onClick = { recipe ->
 
 
-                          throw RuntimeException("weird crash 2")
-                       /*     currentRecipe = recipe
-                            navController.navigate(RecipeAppScreen.Details.name)*/
+                          //throw RuntimeException("weird crash 2")
+                       currentRecipe = recipe
+                            navController.navigate(RecipeAppScreen.Details.name)
 
                         })
                 }

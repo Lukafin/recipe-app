@@ -40,3 +40,13 @@ https://www.youtube.com/watch?v=6mWrp_-MxW8&ab_channel=AbdulBasit
 ## Video Demo
 You can watch the video demo [here](https://www.youtube.com/watch?v=99i21nB4sI0&ab_channel=AbdulBasit)
 
+## Sentry webhook → Cursor agent
+There is a small Python server (`sentry_webhook_server.py`) that receives Sentry webhooks and forwards a crash prompt to Cursor Cloud.
+
+1. Create `.env` in the repo root with your Cursor API key:
+   ```
+   CURSOR_KEY=your_cursor_api_key
+   ```
+2. Optional overrides: `CURSOR_REPO` (defaults to `https://github.com/Lukafin/recipe-app`), `CURSOR_BRANCH`, `CURSOR_AUTOCREATE_PR` (true/false), `CURSOR_MODEL`, `CURSOR_AGENT_URL`.
+3. Run the server: `python3 sentry_webhook_server.py` (listens on `http://localhost:5001/webhook`).
+4. Point Sentry’s webhook to that URL (or an ngrok tunnel) so crashes are forwarded to the Cursor agent.
