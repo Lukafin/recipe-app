@@ -1,0 +1,25 @@
+name: Monthly Competitive Research
+
+on:
+  schedule:
+    - cron: "0 4 1 * *" # Run at 04:00 UTC on the first day of the month
+  workflow_dispatch:
+
+jobs:
+  generate-competitive-digest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Launch Cursor background agent for competitive intelligence
+        env:
+          CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+          REPO: ${{ github.repository }}
+          ENABLE_OPENAI_DEEP_RESEARCH: ${{ vars.ENABLE_OPENAI_DEEP_RESEARCH || 'false' }}
+          ENABLE_PERPLEXITY_SEARCH: ${{ vars.ENABLE_PERPLEXITY_SEARCH || 'false' }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_RESEARCH_PROJECT_ID: ${{ vars.OPENAI_RESEARCH_PROJECT_ID }}
+          PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+        run: ./.github/scripts/run-monthly-competitive-research.sh
