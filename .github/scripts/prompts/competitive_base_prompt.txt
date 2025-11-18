@@ -4,9 +4,20 @@ Context:
 - Repository: https://github.com/Lukafin/recipe-app (current working repo)
 - Platforms: Android, iOS, Desktop, Web/WASM, TV, and Android Automotive; shared UI/navigation lives in `shared/src/commonMain/kotlin`.
 - Output folder: ai-competitive-intel/
-- Goal: surface notable recipe and cooking app moves from the past month—feature launches, UX patterns, AI-assisted cooking capabilities, meal planning/shopping integrations, monetization/pricing trials, distribution partnerships, and relevant Compose/Kotlin multiplatform library updates that could influence this app’s direction.
+- Goal: surface notable recipe and cooking app moves from the past month—feature launches, UX patterns, AI-assisted cooking capabilities, meal planning/shopping integrations, monetization/pricing trials, distribution partnerships, and relevant Compose/Kotlin multiplatform library updates that could influence this app's direction.
 
 Instructions:
+0. **Research Phase - Search Online First:**
+   Before creating the digest, conduct comprehensive web searches to gather current competitive intelligence:
+   - Search for recent recipe and cooking app updates, feature launches, and announcements from major competitors (e.g., Tasty, Yummly, Allrecipes, NYT Cooking, Paprika, Mealime, SideChef, Kitchen Stories)
+   - Search for AI-assisted cooking features, meal planning tools, and smart kitchen integrations
+   - Search for shopping list integrations, grocery delivery partnerships, and nutrition/dietary features
+   - Search for monetization changes (subscription pricing, premium features, ads, creator programs)
+   - Search for Compose Multiplatform updates, Kotlin Multiplatform news, and relevant cross-platform UI/UX libraries
+   - Search for Android/iOS app store changelogs and product blog posts from recipe apps
+   - Search for cooking app UX patterns, voice-guided cooking, TV interfaces, and automotive integrations
+   - Look for press releases, tech blogs, product hunt launches, and industry news related to food/recipe apps
+   Use multiple search queries to ensure comprehensive coverage of the competitive landscape.
 1. Create (or update) a Markdown file inside `ai-competitive-intel/` named `YYYY-MM-competitive-digest.md`, where `YYYY-MM` matches the target month you’re covering.
 2. Use this structure:
    # <Month YYYY> Recipe App Competitive Digest
