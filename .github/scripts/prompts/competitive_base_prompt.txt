@@ -8,7 +8,7 @@ Context:
 
 Instructions:
 0. **Research Phase - Search Online First:**
-   Before creating the digest, conduct comprehensive web searches to gather current competitive intelligence:
+   Before creating the digest, conduct comprehensive web searches using perplexityai python tool (https://docs.perplexity.ai/getting-started/quickstart) you have at your disposal to gather current competitive intelligence:
    - Search for recent recipe and cooking app updates, feature launches, and announcements from major competitors (e.g., Tasty, Yummly, Allrecipes, NYT Cooking, Paprika, Mealime, SideChef, Kitchen Stories)
    - Search for AI-assisted cooking features, meal planning tools, and smart kitchen integrations
    - Search for shopping list integrations, grocery delivery partnerships, and nutrition/dietary features
