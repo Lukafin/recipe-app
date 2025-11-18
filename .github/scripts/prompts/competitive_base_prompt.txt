@@ -17,7 +17,7 @@ Instructions:
    ## Monetization & Partnerships
    - Brief bullets on pricing experiments, bundles, creator programs, or distribution deals that impact user growth/retention.
    ## Tech & Platform Notes
-   - Kotlin/Compose multiplatform, Android/iOS/Web/TV/Automotive SDK shifts, performance or accessibility patterns, or open-source UI/component releases that could be adopted.
+   - Kotlin/Compose multiplatform, Android/iOS shifts, performance or accessibility patterns, or open-source UI/component releases that could be adopted.
    ## Sources
    - Bullet list of links (press releases, product blogs, store changelogs, OSS repos, research snippets) and any supplemental context provided in this prompt.
    ## Suggested Follow-ups
