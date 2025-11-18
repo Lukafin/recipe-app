@@ -33,13 +33,13 @@ class MainActivity : AppCompatActivity() {
 private fun CrashTester(content: @Composable () -> Unit) {
     Box(modifier = Modifier.fillMaxSize()) {
         content()
-        Button(
+        /* Button(
             onClick = { throw RuntimeException("Test crash triggered manually") },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(16.dp)
         ) {
             Text("Crash")
-        }
+        } */
     }
 }

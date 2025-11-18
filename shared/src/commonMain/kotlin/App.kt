@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -23,7 +24,7 @@ fun App(sensorManager: SensorManager?, isLarge: Boolean = false) {
     val navController = rememberNavController()
 
     MaterialTheme(typography = getTypography(fontFamily)) {
-        val items by remember { mutableStateOf(recipesList) }
+        var items by remember { mutableStateOf(recipesList) }
         var currentRecipe = items.first()
 
         SharedTransitionLayout {
@@ -34,26 +35,27 @@ fun App(sensorManager: SensorManager?, isLarge: Boolean = false) {
                 modifier = Modifier.fillMaxSize()
             ) {
                 composable(route = RecipeAppScreen.List.name) {
-                    RecipesListScreen(animatedVisibilityScope = this,
+                    RecipesListScreen(
+                        animatedVisibilityScope = this,
                         sharedTransactionScope = sharedTransitionScope,
                         isLarge = isLarge,
                         items = items,
+                        onSimulateEmptyFeed = { items = emptyList() },
                         onClick = { recipe ->
-
-
-                          //throw RuntimeException("weird crash 2")
-                       currentRecipe = recipe
+                            currentRecipe = recipe
                             navController.navigate(RecipeAppScreen.Details.name)
-
-                        })
+                        }
+                    )
                 }
                 composable(route = RecipeAppScreen.Details.name) {
-                    RecipeDetails(animatedVisibilityScope = this,
+                    RecipeDetails(
+                        animatedVisibilityScope = this,
                         sharedTransactionScope = sharedTransitionScope,
                         isLarge = isLarge,
                         sensorManager = sensorManager,
                         recipe = currentRecipe,
-                        goBack = { navController.popBackStack() })
+                        goBack = { navController.popBackStack() }
+                    )
                 }
             }
         }

@@ -9,8 +9,11 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material.Button
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import model.Recipe
 import sugar
 
@@ -24,6 +27,7 @@ import sugar
 fun RecipesListScreen(
     items: List<Recipe>,
     onClick: (recipe: Recipe) -> Unit,
+    onSimulateEmptyFeed: () -> Unit,
     isLarge: Boolean,
     sharedTransactionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
@@ -31,27 +35,38 @@ fun RecipesListScreen(
     Box(
         modifier = Modifier.fillMaxSize().background(sugar)
     ) {
-        val listState = rememberLazyGridState()
-        LazyVerticalGrid(
-            state = listState, columns = GridCells.Fixed(if (isLarge) 3 else 1)
-        ) {
-            if (isLarge.not())
-                item {
-                    Spacer(modifier = Modifier.windowInsetsPadding(WindowInsets.systemBars))
-                }
-            items(items.size) { item ->
-                val recipe = items[item]
-                RecipeListItemWrapper(
-                    scrollDirection = listState.isScrollingUp(),
-                    child = {
-                        RecipeListItem(
-                            recipe = recipe,
-                            onClick = onClick,
-                            sharedTransitionScope = sharedTransactionScope,
-                            animatedVisibilityScope = animatedVisibilityScope,
-                        )
+        Column(modifier = Modifier.fillMaxSize()) {
+            Button(
+                onClick = onSimulateEmptyFeed,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+            ) {
+                Text("Simulate empty feed")
+            }
+
+            val listState = rememberLazyGridState()
+            LazyVerticalGrid(
+                state = listState, columns = GridCells.Fixed(if (isLarge) 3 else 1)
+            ) {
+                if (isLarge.not())
+                    item {
+                        Spacer(modifier = Modifier.windowInsetsPadding(WindowInsets.systemBars))
                     }
-                )
+                items(items.size) { item ->
+                    val recipe = items[item]
+                    RecipeListItemWrapper(
+                        scrollDirection = listState.isScrollingUp(),
+                        child = {
+                            RecipeListItem(
+                                recipe = recipe,
+                                onClick = onClick,
+                                sharedTransitionScope = sharedTransactionScope,
+                                animatedVisibilityScope = animatedVisibilityScope,
+                            )
+                        }
+                    )
+                }
             }
         }
     }
