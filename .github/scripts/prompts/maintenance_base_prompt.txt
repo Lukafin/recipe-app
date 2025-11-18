@@ -1,4 +1,4 @@
-Perform a proactive maintenance review for the repository. Focus on both the backend/ and frontend/ directories.
+Perform a proactive maintenance review for the repository. 
 
 Goals:
 1. Detect code, architecture, or dependency issues that will make the project harder to maintain in the future. Examples include dead code, missing tests around critical logic, tightly coupled modules, outdated dependency pins, or unclear separation of concerns.
