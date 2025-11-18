@@ -50,3 +50,11 @@ There is a small Python server (`sentry_webhook_server.py`) that receives Sentry
 2. Optional overrides: `CURSOR_REPO` (defaults to `https://github.com/Lukafin/recipe-app`), `CURSOR_BRANCH`, `CURSOR_AUTOCREATE_PR` (true/false), `CURSOR_MODEL`, `CURSOR_AGENT_URL`.
 3. Run the server: `python3 sentry_webhook_server.py` (listens on `http://localhost:5001/webhook`).
 4. Point Sentry’s webhook to that URL (or an ngrok tunnel) so crashes are forwarded to the Cursor agent.
+
+### Recent changes (past 7 days)
+- **Refactor app screens**: Updated `MainActivity` and `RecipesListScreen` for improved functionality (`4c9e546`, 2025-11-18).
+- **Docker/Env for tooling**: Added Dockerfile and environment configuration for Android + Perplexity + Mony CLI (`f48618b`, `063854e`, 2025-11-18).
+- **Sentry integration**: Integrated error tracking, added webhook server, and crash testing (`d4c60da`, `e8d359f`, `70b0114`, 2025-11-17).
+- **Toolchain update**: Bumped JVM toolchain to 21 (`8f1d84a`, 2025-11-17).
+- **Repo automation**: Added monthly maintenance and competitive research workflows, weekly README update, and workflow/script cleanups (`d0f33a7`, `f65e632`, `0236651`, `ca43a43`, `03a7541`, 2025-11-17–18).
+- **Docs**: Added `AGENTS.md` and expanded README with Sentry instructions (`0b67f9e`, `ae022ae`, 2025-11-17–18).
