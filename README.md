@@ -15,6 +15,11 @@ You can find it live [here](https://seabdulbasit.github.io/recipe-app/)
 - Desktop
 - Web
 - Android TV
+- Android Automotive
+
+## Requirements
+- JDK 21 (toolchain configured in Gradle)
+- Android SDK: compile/target SDK 35, min SDK 24
 
 ![Screenshot 2023-10-08 at 1 23 46 PM](https://github.com/SEAbdulbasit/recipe-app/assets/33172684/bf0c9376-fb57-4498-80f6-4a72300cb8e9)
 
@@ -50,3 +55,41 @@ There is a small Python server (`sentry_webhook_server.py`) that receives Sentry
 2. Optional overrides: `CURSOR_REPO` (defaults to `https://github.com/Lukafin/recipe-app`), `CURSOR_BRANCH`, `CURSOR_AUTOCREATE_PR` (true/false), `CURSOR_MODEL`, `CURSOR_AGENT_URL`.
 3. Run the server: `python3 sentry_webhook_server.py` (listens on `http://localhost:5001/webhook`).
 4. Point Sentry’s webhook to that URL (or an ngrok tunnel) so crashes are forwarded to the Cursor agent.
+
+### Build and Run
+- Fast sanity check (all targets): 
+  ```
+  ./gradlew check
+  ```
+- Desktop preview:
+  ```
+  ./gradlew :desktopApp:run
+  ```
+- Android builds:
+  ```
+  ./gradlew :androidApp:assembleDebug
+  ./gradlew :tvApp:assembleDebug
+  ./gradlew :automotiveApp:assembleDebug
+  ```
+- Web/WASM dev server:
+  ```
+  ./gradlew :webApp:wasmJsBrowserDevelopmentRun
+  ```
+- Web distribution (GitHub Pages):
+  ```
+  ./gradlew :webApp:wasmJsBrowserDistribution
+  ```
+  Then sync `webApp/build/dist/wasmJs/productionExecutable/` into `docs/`. Do not edit `docs/` manually; it’s the published build output.
+- iOS: 
+  ```
+  cd iosApp && pod install
+  open iosApp/iosApp.xcworkspace
+  ```
+
+### Automation and maintenance
+- GitHub Actions:
+  - Monthly maintenance audit: `.github/workflows/monthly-maintenance.yml`
+  - Monthly competitive research: `.github/workflows/monthly-competitive-research.yml`
+  - Weekly README update: `.github/workflows/weekly-readme-update.yml`
+- Prompt templates used by the automation live under `.github/scripts/prompts/`.
+- See `AGENTS.md` for an overview of automation, setup, and build instructions.
